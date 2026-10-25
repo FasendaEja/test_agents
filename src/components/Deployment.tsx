@@ -68,6 +68,7 @@ export function Deployment() {
           <li className="flex items-center gap-2"><span className="text-emerald-400">11.</span> Запуск через Docker</li>
           <li className="flex items-center gap-2"><span className="text-emerald-400">12.</span> Тестирование</li>
           <li className="flex items-center gap-2"><span className="text-emerald-400">13.</span> Решение проблем</li>
+          <li className="flex items-center gap-2"><span className="text-emerald-400">14.</span> Отладка в PyCharm</li>
         </ol>
       </div>
 
@@ -704,6 +705,277 @@ xdg-open htmlcov/index.html  # Linux`}
                 <li>• Или измените WORKSPACE_PATH в .env</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 14. PyCharm Debug */}
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <Settings size={20} className="text-emerald-400" />
+          14. Отладка в PyCharm
+        </h3>
+        
+        <div className="space-y-6">
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.1. Открытие проекта в PyCharm</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <ol className="space-y-2 ml-4 list-decimal">
+                <li>Откройте PyCharm Professional Edition (Community Edition не поддерживает отладку Python)</li>
+                <li>File → Open → выберите директорию <code className="text-cyan-400">qa-agent-mvp</code></li>
+                <li>Дождитесь индексации проекта</li>
+              </ol>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.2. Настройка Python интерпретатора</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <ol className="space-y-2 ml-4 list-decimal">
+                <li>PyCharm → Settings (Ctrl+Alt+S) → Project: qa-agent-mvp → Python Interpreter</li>
+                <li>Нажмите шестерёнку → Add Interpreter → Add Local Interpreter</li>
+                <li>Выберите "Virtualenv Environment"</li>
+                <li>Выберите "Existing environment"</li>
+                <li>Укажите путь: <code className="text-cyan-400">./venv/bin/python</code> (Linux/macOS) или <code className="text-cyan-400">.\venv\Scripts\python.exe</code> (Windows)</li>
+                <li>Нажмите OK</li>
+              </ol>
+            </div>
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mt-3">
+              <div className="text-xs text-gray-300">
+                <strong className="text-blue-400">Совет:</strong> PyCharm автоматически обнаружит venv, если он находится в корне проекта.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.3. Установка необходимых плагинов</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <p>Убедитесь, что установлены следующие плагины:</p>
+              <ul className="space-y-1 ml-4">
+                <li>• <strong className="text-gray-200">Python</strong> — базовая поддержка Python (обычно предустановлен)</li>
+                <li>• <strong className="text-gray-200">EnvFile</strong> — поддержка .env файлов (опционально, но рекомендуется)</li>
+                <li>• <strong className="text-gray-200">Database Navigator</strong> — для работы с PostgreSQL (опционально)</li>
+              </ul>
+            </div>
+            <div className="text-sm text-gray-400 mt-2">
+              <p>Установка плагинов: Settings → Plugins → Marketplace → поиск → Install</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.4. Создание Run Configuration для main.py</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <ol className="space-y-2 ml-4 list-decimal">
+                <li>Run → Edit Configurations (или Shift+Alt+F10 → Edit Configurations)</li>
+                <li>Нажмите "+" → Python</li>
+                <li>Заполните поля:
+                  <ul className="space-y-1 ml-4 mt-1">
+                    <li>• <strong className="text-gray-200">Name:</strong> <code className="text-cyan-400">QA Agent - Main</code></li>
+                    <li>• <strong className="text-gray-200">Script path:</strong> <code className="text-cyan-400">main.py</code></li>
+                    <li>• <strong className="text-gray-200">Working directory:</strong> <code className="text-cyan-400">$PROJECT_FILE_DIR$</code></li>
+                    <li>• <strong className="text-gray-200">Python interpreter:</strong> выберите ваш venv</li>
+                  </ul>
+                </li>
+                <li>В разделе "Environment variables" нажмите на иконку папки и выберите ваш <code className="text-cyan-400">.env</code> файл</li>
+                <li>Нажмите Apply → OK</li>
+              </ol>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.5. Создание Run Configuration для CLI</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <ol className="space-y-2 ml-4 list-decimal">
+                <li>Run → Edit Configurations → "+" → Python</li>
+                <li>Заполните поля:
+                  <ul className="space-y-1 ml-4 mt-1">
+                    <li>• <strong className="text-gray-200">Name:</strong> <code className="text-cyan-400">QA Agent - CLI</code></li>
+                    <li>• <strong className="text-gray-200">Module name:</strong> <code className="text-cyan-400">qa_agent.cli.main</code></li>
+                    <li>• <strong className="text-gray-200">Parameters:</strong> <code className="text-cyan-400">run --current ./requirements/current --baseline ./requirements/baseline</code></li>
+                    <li>• <strong className="text-gray-200">Working directory:</strong> <code className="text-cyan-400">$PROJECT_FILE_DIR$</code></li>
+                  </ul>
+                </li>
+                <li>Добавьте переменные окружения из .env</li>
+                <li>Нажмите Apply → OK</li>
+              </ol>
+            </div>
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mt-3">
+              <div className="text-xs text-gray-300">
+                <strong className="text-amber-400">Важно:</strong> Для интерактивного CLI добавьте в конфигурацию: "Modify options" → "Emulate terminal in output console"
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.6. Создание Run Configuration для pytest</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <ol className="space-y-2 ml-4 list-decimal">
+                <li>Run → Edit Configurations → "+" → pytest</li>
+                <li>Заполните поля:
+                  <ul className="space-y-1 ml-4 mt-1">
+                    <li>• <strong className="text-gray-200">Name:</strong> <code className="text-cyan-400">QA Agent - Tests</code></li>
+                    <li>• <strong className="text-gray-200">Target:</strong> <code className="text-cyan-400">tests/</code></li>
+                    <li>• <strong className="text-gray-200">Working directory:</strong> <code className="text-cyan-400">$PROJECT_FILE_DIR$</code></li>
+                    <li>• <strong className="text-gray-200">Additional Arguments:</strong> <code className="text-cyan-400">-v --tb=short</code></li>
+                  </ul>
+                </li>
+                <li>Добавьте переменные окружения из .env</li>
+                <li>Нажмите Apply → OK</li>
+              </ol>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.7. Использование отладчика</h4>
+            <div className="text-sm text-gray-400 space-y-3">
+              <div>
+                <p className="mb-2"><strong className="text-gray-200">Установка breakpoints:</strong></p>
+                <ul className="space-y-1 ml-4">
+                  <li>• Кликните на номер строки слева от кода — появится красный кружок</li>
+                  <li>• Или нажмите <code className="text-cyan-400">Ctrl+F8</code> (Cmd+F8 на Mac)</li>
+                  <li>• Для условного breakpoint: правый клик на breakpoint → Condition</li>
+                </ul>
+              </div>
+
+              <div>
+                <p className="mb-2"><strong className="text-gray-200">Запуск в режиме отладки:</strong></p>
+                <ul className="space-y-1 ml-4">
+                  <li>• Выберите конфигурацию в верхнем правом углу</li>
+                  <li>• Нажмите <code className="text-cyan-400">Shift+F9</code> (Debug) вместо <code className="text-cyan-400">Shift+F10</code> (Run)</li>
+                  <li>• Или нажмите на иконку жука 🐞</li>
+                </ul>
+              </div>
+
+              <div>
+                <p className="mb-2"><strong className="text-gray-200">Управление отладкой:</strong></p>
+                <ul className="space-y-1 ml-4">
+                  <li>• <code className="text-cyan-400">F8</code> — Step Over (перейти к следующей строке)</li>
+                  <li>• <code className="text-cyan-400">F7</code> — Step Into (войти в функцию)</li>
+                  <li>• <code className="text-cyan-400">Shift+F8</code> — Step Out (выйти из функции)</li>
+                  <li>• <code className="text-cyan-400">Alt+F9</code> — Run to Cursor (выполнить до курсора)</li>
+                  <li>• <code className="text-cyan-400">F9</code> — Resume Program (продолжить выполнение)</li>
+                </ul>
+              </div>
+
+              <div>
+                <p className="mb-2"><strong className="text-gray-200">Просмотр переменных:</strong></p>
+                <ul className="space-y-1 ml-4">
+                  <li>• Панель "Variables" показывает текущие значения переменных</li>
+                  <li>• Наведите курсор на переменную в коде — появится всплывающая подсказка</li>
+                  <li>• Используйте "Watches" для отслеживания конкретных выражений</li>
+                  <li>• "Evaluate Expression" (<code className="text-cyan-400">Alt+F8</code>) для выполнения произвольного кода</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.8. Отладка агентов</h4>
+            <div className="text-sm text-gray-400 space-y-2">
+              <p>Рекомендуемые точки для установки breakpoints:</p>
+              <ul className="space-y-1 ml-4">
+                <li>• <code className="text-cyan-400">agents/requirement_intake_agent.py</code> — метод <code className="text-cyan-400">run()</code></li>
+                <li>• <code className="text-cyan-400">agents/requirement_diff_agent.py</code> — метод <code className="text-cyan-400">compare()</code></li>
+                <li>• <code className="text-cyan-400">llm/client.py</code> — метод <code className="text-cyan-400">complete()</code> для отладки вызовов LLM</li>
+                <li>• <code className="text-cyan-400">graph/nodes.py</code> — функции узлов графа</li>
+                <li>• <code className="text-cyan-400">human/stage_gate.py</code> — метод <code className="text-cyan-400">can_proceed()</code></li>
+              </ul>
+            </div>
+            <CodeBlock
+              title="Пример: отладка LLM вызова"
+              language="python"
+              code={`# В llm/client.py добавьте breakpoint:
+
+async def complete(self, prompt: str) -> str:
+    # Breakpoint здесь для просмотра промпта
+    import breakpoint; breakpoint()  # или установите через UI
+    
+    response = await self.client.chat.completions.create(
+        model=self.config.model,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=self.config.temperature,
+    )
+    
+    # Breakpoint здесь для просмотра ответа
+    result = response.choices[0].message.content
+    return result`}
+            />
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.9. Полезные советы</h4>
+            <div className="text-sm text-gray-400 space-y-3">
+              <div className="border border-gray-700/50 rounded-lg p-3">
+                <p className="mb-1"><strong className="text-gray-200">💡 Горячие клавиши:</strong></p>
+                <ul className="space-y-1 ml-4 text-xs">
+                  <li>• <code className="text-cyan-400">Ctrl+Shift+F10</code> — запустить текущий файл</li>
+                  <li>• <code className="text-cyan-400">Ctrl+Shift+F9</code> — отладка текущего файла</li>
+                  <li>• <code className="text-cyan-400">Alt+Shift+F10</code> — выбор конфигурации запуска</li>
+                  <li>• <code className="text-cyan-400">Ctrl+Alt+L</code> — форматирование кода</li>
+                  <li>• <code className="text-cyan-400">Ctrl+D</code> — дублировать строку</li>
+                  <li>• <code className="text-cyan-400">Ctrl+/</code> — комментировать/раскомментировать</li>
+                </ul>
+              </div>
+
+              <div className="border border-gray-700/50 rounded-lg p-3">
+                <p className="mb-1"><strong className="text-gray-200">💡 Отладка с .env файлом:</strong></p>
+                <p className="text-xs">Если установили плагин EnvFile, можете использовать:</p>
+                <ul className="space-y-1 ml-4 text-xs mt-1">
+                  <li>• Run Configuration → "EnvFile" tab → Enable EnvFile</li>
+                  <li>• Добавьте ваш <code className="text-cyan-400">.env</code> файл</li>
+                  <li>• Переменные автоматически загрузятся при запуске</li>
+                </ul>
+              </div>
+
+              <div className="border border-gray-700/50 rounded-lg p-3">
+                <p className="mb-1"><strong className="text-gray-200">💡 Отладка PostgreSQL:</strong></p>
+                <p className="text-xs">Для отладки SQL запросов:</p>
+                <ul className="space-y-1 ml-4 text-xs mt-1">
+                  <li>• В <code className="text-cyan-400">.env</code> установите <code className="text-cyan-400">DB_ECHO=true</code></li>
+                  <li>• SQLAlchemy будет логировать все SQL запросы в консоль</li>
+                  <li>• Используйте Database Navigator для просмотра данных</li>
+                </ul>
+              </div>
+
+              <div className="border border-gray-700/50 rounded-lg p-3">
+                <p className="mb-1"><strong className="text-gray-200">💡 Профилирование:</strong></p>
+                <p className="text-xs">Для анализа производительности:</p>
+                <ul className="space-y-1 ml-4 text-xs mt-1">
+                  <li>• Run → Profile (или Shift+Alt+F6)</li>
+                  <li>• Выберите конфигурацию</li>
+                  <li>• PyCharm покажет время выполнения функций</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-sm font-medium text-gray-300 mb-2">14.10. Пример конфигурации .run/qa_agent_cli.run.xml</h4>
+            <CodeBlock
+              title=".run/qa_agent_cli.run.xml"
+              language="xml"
+              code={`<component name="ProjectRunConfigurationManager">
+  <configuration name="QA Agent - CLI" type="PythonConfigurationType" 
+               factoryName="Python">
+    <module name="qa-agent-mvp" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK_INHERITED" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <option name="SCRIPT_NAME" value="qa_agent.cli.main" />
+    <option name="PARAMETERS" value="run --current ./requirements/current" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="true" />
+    <option name="MODULE_MODE" value="true" />
+  </configuration>
+</component>`}
+            />
           </div>
         </div>
       </div>
