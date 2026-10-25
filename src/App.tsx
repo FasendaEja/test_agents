@@ -11,8 +11,9 @@ import { Demo } from './components/Demo';
 import { Tests } from './components/Tests';
 import { Deployment } from './components/Deployment';
 import { PromptsEditor } from './components/PromptsEditor';
+import { Roadmap } from './components/Roadmap';
 
-export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests' | 'deployment' | 'prompts';
+export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests' | 'deployment' | 'prompts' | 'roadmap';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('overview');
@@ -30,6 +31,7 @@ export default function App() {
       case 'tests': return <Tests />;
       case 'deployment': return <Deployment />;
       case 'prompts': return <PromptsEditor />;
+      case 'roadmap': return <Roadmap />;
       default: return <Overview />;
     }
   };
