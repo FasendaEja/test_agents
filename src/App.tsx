@@ -9,8 +9,9 @@ import { ProjectStructure } from './components/ProjectStructure';
 import { Config } from './components/Config';
 import { Demo } from './components/Demo';
 import { Tests } from './components/Tests';
+import { Deployment } from './components/Deployment';
 
-export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests';
+export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests' | 'deployment';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('overview');
@@ -26,6 +27,7 @@ export default function App() {
       case 'config': return <Config />;
       case 'demo': return <Demo />;
       case 'tests': return <Tests />;
+      case 'deployment': return <Deployment />;
       default: return <Overview />;
     }
   };
