@@ -9,6 +9,7 @@ import {
   Play,
   TestTube,
   Rocket,
+  MessageSquare,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -27,6 +28,7 @@ const navItems: { id: Section; label: string; icon: React.ReactNode }[] = [
   { id: 'demo', label: 'Демо процесса', icon: <Play size={18} /> },
   { id: 'tests', label: 'Тесты', icon: <TestTube size={18} /> },
   { id: 'deployment', label: 'Развертывание', icon: <Rocket size={18} /> },
+  { id: 'prompts', label: 'Промпты агентов', icon: <MessageSquare size={18} /> },
 ];
 
 export function Sidebar({ activeSection, setActiveSection, isOpen }: SidebarProps) {

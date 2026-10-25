@@ -10,8 +10,9 @@ import { Config } from './components/Config';
 import { Demo } from './components/Demo';
 import { Tests } from './components/Tests';
 import { Deployment } from './components/Deployment';
+import { PromptsEditor } from './components/PromptsEditor';
 
-export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests' | 'deployment';
+export type Section = 'overview' | 'pipeline' | 'architecture' | 'schemas' | 'structure' | 'config' | 'demo' | 'tests' | 'deployment' | 'prompts';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<Section>('overview');
@@ -28,6 +29,7 @@ export default function App() {
       case 'demo': return <Demo />;
       case 'tests': return <Tests />;
       case 'deployment': return <Deployment />;
+      case 'prompts': return <PromptsEditor />;
       default: return <Overview />;
     }
   };
